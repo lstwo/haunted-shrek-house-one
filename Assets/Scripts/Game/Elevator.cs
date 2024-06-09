@@ -1,0 +1,44 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Elevator : MonoBehaviour
+{
+    public AnimationClip openClip;
+    public AnimationClip closeClip;
+
+    public int floor;
+
+    private void Start()
+    {
+        GetComponentInChildren<Animation>().clip = openClip;
+        GetComponentInChildren<Animation>().Play();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player" && !GameManager.Instance.justLoadedFloor)
+            StartCoroutine(GoToNextFloor());
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            GameManager.Instance.justLoadedFloor = false;
+        }
+    }
+
+    private IEnumerator GoToNextFloor()
+    {
+        yield return new WaitForSeconds(1f);
+
+        GameManager.Instance.justLoadedFloor = true;
+        GetComponentInChildren<Animation>().clip = closeClip;
+        GetComponentInChildren<Animation>().Play();
+
+        yield return new WaitForSeconds(0.75f);
+
+        GameManager.Instance.LoadFloor(floor);
+    }
+}
