@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     [Header("Assigns")]
     public SceneField[] floors;
+    public PlayerController playerController;
 
     [Header("Funny Numbers")]
     public int startingFloor = -1;

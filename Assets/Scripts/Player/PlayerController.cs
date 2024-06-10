@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Assigns")]
     public RectTransform staminometer;
+    public Pickup pickup;
 
     [Header("Funny Numbers")]
     public float playerSpeed = 1.0f;
@@ -23,12 +23,12 @@ public class PlayerController : MonoBehaviour
     private float maxStaminometerSize;
 
     private InputManager inputManager;
-    private CharacterController controller;
+    private Rigidbody rb;
     private Transform camTransform;
 
     private void Start()
     {
-        controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
         inputManager = InputManager.Instance;
         camTransform = Camera.main.transform;
 
@@ -72,6 +72,6 @@ public class PlayerController : MonoBehaviour
 
         move = camTransform.forward * move.z + camTransform.right * move.x;
         move = new(move.x, 0, move.z);
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        rb.velocity = (move * Time.deltaTime * playerSpeed * 300);
     }
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
-public class SettingsManager : MonoBehaviour
+public class MainMenuManager : MonoBehaviour
 {
-    public static float sensitivity = 10;
+    public static float sensitivity = 15;
 
     public AudioMixer mixer;
 
