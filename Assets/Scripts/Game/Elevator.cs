@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Elevator : MonoBehaviour
 {
+    [Tooltip("Collider used to stop the player from enterng the Elevator and immediately exiting")]
+    public GameObject blockCollider;
     public AnimationClip openClip;
     public AnimationClip closeClip;
 
@@ -39,6 +41,6 @@ public class Elevator : MonoBehaviour
 
         yield return new WaitForSeconds(0.75f);
 
-        GameManager.Instance.LoadFloor(floor);
+        StartCoroutine(GameManager.Instance.LoadFloor(floor));
     }
 }
