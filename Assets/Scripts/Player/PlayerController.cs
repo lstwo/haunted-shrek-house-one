@@ -70,8 +70,16 @@ public class PlayerController : MonoBehaviour
         if(doStamina)
             staminometer.sizeDelta = new(maxStaminometerSize / maxStamina * stamina, staminometer.sizeDelta.y);
 
-        move = camTransform.forward * move.z + camTransform.right * move.x;
-        move = new(move.x, 0, move.z);
-        rb.velocity = (move * Time.deltaTime * playerSpeed * 300);
+        Vector3 horizontalForward = camTransform.forward;
+        horizontalForward.y = 0;
+        horizontalForward.Normalize();
+
+        Vector3 horizontalRight = camTransform.right;
+        horizontalRight.y = 0;
+        horizontalRight.Normalize();
+
+        move = horizontalForward * move.z + horizontalRight * move.x;
+
+        rb.velocity = move * playerSpeed;
     }
 }
