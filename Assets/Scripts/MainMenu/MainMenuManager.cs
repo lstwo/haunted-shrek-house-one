@@ -7,11 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
+    [Header("Assigns")]
+    public AudioMixer mixer;
+    public TextMeshProUGUI senitivityPercentage, volumePercentage;
+
+    [Header("Funny Numbers")]
     public static float sensitivity = 5;
 
-    public AudioMixer mixer;
-
-    public TextMeshProUGUI senitivityPercentage, volumePercentage;
+    
 
     public void SetSensitivity(float value)
     {

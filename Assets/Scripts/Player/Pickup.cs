@@ -64,17 +64,20 @@ public class Pickup : MonoBehaviour
 
     public void Drop()
     {
+        if(isHolding)
+        {
             // Resetting all variables about the picked up object
-        holdingPoint.transform.localPosition = Vector3.zero;
+            holdingPoint.transform.localPosition = Vector3.zero;
 
-        pickupObject = null;
-        pickupRb = null;
+            pickupObject = null;
+            pickupRb = null;
 
-        lineEnabled = false;
-        isHolding = false;
+            lineEnabled = false;
+            isHolding = false;
 
             // Resetting the line renderer
-        lineRenderer.positionCount = 0;
+            lineRenderer.positionCount = 0;
+        }
     }
 
     void PickUp(RaycastHit hit)

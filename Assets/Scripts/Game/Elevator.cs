@@ -9,6 +9,8 @@ public class Elevator : MonoBehaviour
     public AnimationClip openClip;
     public AnimationClip closeClip;
 
+    public bool saveFloorWhenUsed = true;
+
     public int floor;
 
     private void Start()

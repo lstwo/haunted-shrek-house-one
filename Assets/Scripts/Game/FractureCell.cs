@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class FractureCell : MonoBehaviour
 {
-    public Animation _animation;
-
     private void OnEnable()
     {
         StartCoroutine(Despawn());

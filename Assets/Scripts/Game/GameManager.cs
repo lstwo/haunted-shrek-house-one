@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,6 +16,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector] // Used for spawning in an elevator to not instantly load the next floor
     public bool justLoadedFloor = false;
 
+    [HideInInspector]
+    public int currentFloor = 1;
+
     private static GameManager _instance;
 
     public static GameManager Instance
@@ -27,16 +31,38 @@ public class GameManager : MonoBehaviour
         if (_instance != null && _instance != this) Destroy(this.gameObject);
         else _instance = this;
 
-        if(startingFloor >= 0 && startingFloor < floors.Length)
-            SceneManager.LoadSceneAsync(floors[startingFloor], LoadSceneMode.Additive);
+        if (GameSaves.saves[GameSaves.currentSave].progress.currentFloor >= 0 && GameSaves.saves[GameSaves.currentSave].progress.currentFloor <= floors.Length)
+        {
+            SceneManager.LoadScene(floors[GameSaves.saves[GameSaves.currentSave].progress.currentFloor - 1], LoadSceneMode.Additive);
+        }
+    }
+
+    private void Start()
+    {
+        SpawnPlayer();
+    }
+
+    private async void SpawnPlayer()
+    {
+        while (FloorManager.Instance == null) await Task.Delay(1);
+        playerController.transform.position = FloorManager.Instance.playerSpawn.position;
     }
 
     public IEnumerator LoadFloor(int floorIndex)
     {
         if(floorIndex < floors.Length)
         {
+            if(floorIndex > currentFloor - 1)
+            {
+                GameSaveManager.TryOverrideFloor(floorIndex + 1, FloorManager.Instance.ToFloorProgress());
+            }
+
+            SaveSystem.SaveGame();
+
             justLoadedFloor = true;
             AsyncOperation operation = SceneManager.LoadSceneAsync(floors[floorIndex], LoadSceneMode.Additive);
+
+            currentFloor = floorIndex + 1;
 
             foreach (SceneField s in floors)
             {

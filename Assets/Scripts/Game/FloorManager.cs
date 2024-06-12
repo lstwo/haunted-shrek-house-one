@@ -12,6 +12,7 @@ public class FloorManager : MonoBehaviour
     [Header("Funny Numbers")]
     [Tooltip("Check this if the player spawns in the elevator!")]
     public bool playerSpawnInElevator = false;
+    public int floorNumber = 1;
 
     [HideInInspector]
     public bool hasBeenCompleted = false;
@@ -26,18 +27,32 @@ public class FloorManager : MonoBehaviour
 
     private void Awake()
     {
-        if(_instance != null && _instance != this) Destroy(_instance);
-        else _instance = this;
+        if(_instance != null && _instance != this) Destroy(_instance.gameObject);
+        _instance = this;
+        Debug.Log(_instance);
 
         if(playerSpawnInElevator) GameManager.Instance.justLoadedFloor = true;
 
-        if (hasBeenCompleted)
+        if (GameSaveManager.GetFloorProgress(floorNumber) != null)
         {
+            for(int i = 0; i < doorsToSave.Length; i++)
+            {
+                doorsToSave[i].hasBeenOpened = GameSaveManager.GetFloorProgress(floorNumber).doorProgress[i].opened;
+                Debug.Log(i + "" + GameSaveManager.GetFloorProgress(floorNumber).doorProgress[i].opened);
+            }
+
             foreach (DoorField f in doorsToSave)
             {
                 f.door.SetActive(!f.hasBeenOpened);
             }
         }
+    }
+
+    public SerializableFloorProgress ToFloorProgress()
+    {
+        SerializableFloorProgress progress = new(floorNumber, doorsToSave);
+        Debug.Log(progress.doorProgress.Length);
+        return progress;
     }
 }
 
