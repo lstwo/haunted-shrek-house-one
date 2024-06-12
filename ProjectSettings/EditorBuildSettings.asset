@@ -20,4 +20,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Floors/TestFloor 3.unity
     guid: a6d89dbc3ba31a44fb2d21c4b96d4c05
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: e950a8abb8fd1ab4d88c012b5e098ccc,
+      type: 2}

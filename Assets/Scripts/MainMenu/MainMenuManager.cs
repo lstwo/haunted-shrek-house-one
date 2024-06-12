@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public static float sensitivity = 15;
+    public static float sensitivity = 5;
 
     public AudioMixer mixer;
 
@@ -15,7 +15,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void SetSensitivity(float value)
     {
-        sensitivity = value;
+        sensitivity = value / 5;
         senitivityPercentage.text = ((int)value).ToString() + "%";
     }
 

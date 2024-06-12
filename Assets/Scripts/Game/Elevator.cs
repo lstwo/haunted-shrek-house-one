@@ -33,6 +33,8 @@ public class Elevator : MonoBehaviour
 
     private IEnumerator GoToNextFloor()
     {
+        blockCollider.SetActive(true);
+
         yield return new WaitForSeconds(1f);
 
         GameManager.Instance.justLoadedFloor = true;
