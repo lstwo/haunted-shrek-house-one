@@ -20,6 +20,12 @@ public class GameSaveManager : MonoBehaviour
     {
         if (_instance != null && _instance != this) Destroy(this.gameObject);
         else _instance = this;
+
+        for (int i = 0; i < GameSaves.saves.Length; i++)
+        {
+            GameSaves.saves[i] = GameSave.Empty();
+            Debug.Log(GameSaves.saves[i]);
+        }
     }
 
     public void SelectGameSave(int id)

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [Header("Assigns")]
     public SceneField[] floors;
     public PlayerController playerController;
+    public GameObject renderTextureScreen;
 
     [Header("Funny Numbers")]
     public int startingFloor = -1;
@@ -31,15 +32,45 @@ public class GameManager : MonoBehaviour
         if (_instance != null && _instance != this) Destroy(this.gameObject);
         else _instance = this;
 
+        Debug.Log(GameSaves.saves[GameSaves.currentSave]);
+        Debug.Log(GameSaves.saves[GameSaves.currentSave].progress);
+        Debug.Log(GameSaves.saves[GameSaves.currentSave].progress.currentFloor);
+
         if (GameSaves.saves[GameSaves.currentSave].progress.currentFloor >= 0 && GameSaves.saves[GameSaves.currentSave].progress.currentFloor <= floors.Length)
         {
-            SceneManager.LoadScene(floors[GameSaves.saves[GameSaves.currentSave].progress.currentFloor - 1], LoadSceneMode.Additive);
+            SceneManager.LoadSceneAsync(floors[GameSaves.saves[GameSaves.currentSave].progress.currentFloor - 1], LoadSceneMode.Additive);
         }
     }
 
     private void Start()
     {
         SpawnPlayer();
+    }
+
+    private void Update()
+    {
+        renderTextureScreen.SetActive(CheckIfAnyFloorLoaded());
+    }
+
+    public bool CheckIfAnyFloorLoaded()
+    {
+        bool hasFloorLoaded = false;
+
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            for (int j = 0; j < floors.Length; j++)
+            {
+                if (SceneManager.GetSceneAt(i).name == floors[j])
+                {
+                    hasFloorLoaded = true;
+                    break;
+                }
+            }
+
+            if (hasFloorLoaded) break;
+        }
+
+        return hasFloorLoaded;
     }
 
     private async void SpawnPlayer()

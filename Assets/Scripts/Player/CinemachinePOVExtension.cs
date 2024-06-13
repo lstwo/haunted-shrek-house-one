@@ -34,6 +34,8 @@ public class CinemachinePOVExtension : CinemachineExtension
 
                 startingRotation.y = Mathf.Clamp(startingRotation.y, -clampAngle, clampAngle);
 
+
+
                 state.RawOrientation = Quaternion.Euler(startingRotation.y % 360, startingRotation.x % 360, 0f);
             }
         }

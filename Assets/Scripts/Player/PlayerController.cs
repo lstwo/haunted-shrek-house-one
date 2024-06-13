@@ -8,23 +8,42 @@ public class PlayerController : MonoBehaviour
     [Header("Assigns")]
     public RectTransform staminometer;
     public Pickup pickup;
+    public Animation headAnimation;
+
+    public AnimationClip idleHeadAnimation, walkingHeadAnimation, sprintingHeadAnimation;
 
     [Header("Funny Numbers")]
     public float playerSpeed = 1.0f;
     public float sprintMultiplier = 2.0f;
+
     [Range(0.0f, 100.0f)]
     public float maxStamina = 5.0f;
+
+    public float staminaUseMultiplier = 1f;
+    public float staminaRegenStillMultiplier = 1.5f;
+    public float staminaRegenWalkMultiplier = 0.2f;
+
     public bool doSprint = true;
     public bool doStamina = true;
 
     [HideInInspector]
     public float stamina = 5.0f;
 
+    [HideInInspector]
+    public PlayerStage currentStage;
+
     private float maxStaminometerSize;
 
     private InputManager inputManager;
     private Rigidbody rb;
     private Transform camTransform;
+
+    public enum PlayerStage
+    {
+        Still,
+        Walking,
+        Sprinting
+    }
 
     private void Start()
     {
@@ -45,24 +64,36 @@ public class PlayerController : MonoBehaviour
         {
             if (inputManager.GetSprint() && stamina > 0 && move != Vector3.zero)
             {
+                currentStage = PlayerStage.Sprinting;
+                headAnimation.clip = (sprintingHeadAnimation);
+                headAnimation.Play();
+
                 move *= sprintMultiplier;
 
                 if(doStamina)
                 {
-                    stamina -= Time.deltaTime;
+                    stamina -= Time.deltaTime * staminaUseMultiplier;
                     stamina = Mathf.Clamp(stamina, 0f, maxStamina);
                 }
             }
 
             else if (move == Vector3.zero && doStamina)
             {
-                stamina += Time.deltaTime * 1.5f;
+                currentStage = PlayerStage.Still;
+                headAnimation.clip = (idleHeadAnimation);
+                headAnimation.Play();
+
+                stamina += Time.deltaTime * staminaRegenStillMultiplier;
                 stamina = Mathf.Clamp(stamina, 0f, maxStamina);
             }
 
             else if(doStamina)
             {
-                stamina += Time.deltaTime * 0.3f;
+                currentStage = PlayerStage.Walking;
+                headAnimation.clip = (walkingHeadAnimation);
+                headAnimation.Play();
+
+                stamina += Time.deltaTime * staminaRegenWalkMultiplier;
                 stamina = Mathf.Clamp(stamina, 0f, maxStamina);
             }
         }

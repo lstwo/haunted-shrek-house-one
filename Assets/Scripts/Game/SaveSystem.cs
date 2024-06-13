@@ -12,14 +12,8 @@ public static class SaveSystem
 {
     public static void SaveGame()
     {
-        if (!Directory.Exists(Application.persistentDataPath + "/lstwoSTUDIOS/")) 
-            Directory.CreateDirectory(Application.persistentDataPath + "/lstwoSTUDIOS/");
-
-        if (!Directory.Exists(Application.persistentDataPath + "/lstwoSTUDIOS/HauntedShrekHouseOne/")) 
-            Directory.CreateDirectory(Application.persistentDataPath + "/lstwoSTUDIOS/HauntedShrekHouseOne/");
-
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/lstwoSTUDIOS/HauntedShrekHouseOne/";
+        string path = Application.persistentDataPath;
 
         for(int i = 0; i < GameSaves.saves.Length; i++)
         {
@@ -38,7 +32,7 @@ public static class SaveSystem
 
         for (int i = 0; i < GameSaves.saves.Length; i++)
         {
-            string path = Application.persistentDataPath + "/lstwoSTUDIOS/HauntedShrekHouseOne/save_" + i + ".shrek";
+            string path = Application.persistentDataPath + "/save_" + i + ".shrek";
             if(File.Exists(path))
             {
                 FileStream stream = new FileStream(path, FileMode.Open);
@@ -51,7 +45,8 @@ public static class SaveSystem
                 stream.Close();
             } else
             {
-                Debug.LogError("Save file not found in " + path);
+                Debug.Log("Save file not found in " + path + ". Creating Empty Save");
+                saves[i] = GameSave.Empty();
             }
         }
 
