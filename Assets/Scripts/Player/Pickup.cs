@@ -8,31 +8,34 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-        // Variables
+    // Variables
+    [Header("Assigns")]
     public GameObject holdingPoint;
-    public float distance;
     public LayerMask layerMask;
-    public LineRenderer lineRenderer;
+    public LayerMask envLayerMask;
+    public PlayerController player;
+
+    [Header("Funny Numbers")]
+    public float distance;
     public float speed;
     public float maxDistanceToObject;
-    public PlayerController player;
     public float gravityModifier = 1;
+    public float rotationSpeed = 100f;
 
     Rigidbody pickupRb;
     GameObject pickupObject;
 
-    bool lineEnabled;
-    bool isHolding;
+    Vector3 maxHoldingPosition;
 
-    void Start()
-    {
-        lineEnabled = false;
-    }
+    bool isHolding;
 
     void Update()
     {
         MyInput();
-        LineRendering();
+    }
+
+    private void FixedUpdate()
+    {
         ObjectMoving();
     }
 
@@ -72,11 +75,7 @@ public class Pickup : MonoBehaviour
             pickupObject = null;
             pickupRb = null;
 
-            lineEnabled = false;
             isHolding = false;
-
-            // Resetting the line renderer
-            lineRenderer.positionCount = 0;
         }
     }
 
@@ -90,30 +89,32 @@ public class Pickup : MonoBehaviour
         holdingPoint.transform.position = hit.point;
 
             // Enable Holding and the line renderer
-        lineEnabled = true;
         isHolding = true;
-    }
-
-    void LineRendering()
-    {
-             // Setting the Line Renderers positions to connect the picked up objects
-             // and the area which it is moving to.
-        if(lineEnabled && lineRenderer != null)
-        {
-            lineRenderer.positionCount = 2;
-            lineRenderer.SetPosition(0, holdingPoint.transform.position);
-            lineRenderer.SetPosition(1, pickupObject.transform.position);
-        }
     }
 
     void ObjectMoving()
     {
-            // Seting the velocity of the picked up Object to the distance between the holding point and the object
-        if(pickupRb != null)
+        // Seting the velocity of the picked up Object to the distance between the holding point and the object
+        if (pickupRb != null)
         {
-            Vector3 distance = (holdingPoint.transform.position - pickupRb.transform.position) * speed 
-                / pickupRb.mass;
-            pickupRb.velocity = distance;
+            // Calculate the desired position based on holdingPoint
+            Vector3 desiredPosition = holdingPoint.transform.position;
+
+            // Perform raycast to check if there's an obstacle between the current position and the holding point
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, (desiredPosition - transform.position).normalized, out hit, (desiredPosition - transform.position).magnitude, envLayerMask))
+            {
+                // If there's a hit, set the desired position to the hit point
+                desiredPosition = hit.point;
+            }
+
+            // Calculate the distance vector to move the object
+            Vector3 distance = desiredPosition - pickupRb.transform.position;
+
+            // Smoothly interpolate the position or apply a force
+            pickupRb.velocity = distance * speed;
+
+            pickupRb.transform.forward = transform.forward;
         }
     }
 }

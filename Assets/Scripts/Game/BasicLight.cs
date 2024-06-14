@@ -12,9 +12,4 @@ public class BasicLight : MonoBehaviour
         if(spotLight != null) spotLight.SetActive(enableSpotLight);
         if(pointLight != null) pointLight.SetActive(enablePointLight);
     }
-
-    void Update()
-    {
-        
-    }
 }

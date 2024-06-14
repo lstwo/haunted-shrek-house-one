@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public SceneField[] floors;
     public PlayerController playerController;
     public GameObject renderTextureScreen;
+    public Animation savingTextAnimation;
+    public AnimationClip saveTextPopup, saveTextGoAway;
 
     [Header("Funny Numbers")]
     public int startingFloor = -1;
@@ -32,11 +34,8 @@ public class GameManager : MonoBehaviour
         if (_instance != null && _instance != this) Destroy(this.gameObject);
         else _instance = this;
 
-        Debug.Log(GameSaves.saves[GameSaves.currentSave]);
-        Debug.Log(GameSaves.saves[GameSaves.currentSave].progress);
-        Debug.Log(GameSaves.saves[GameSaves.currentSave].progress.currentFloor);
-
-        if (GameSaves.saves[GameSaves.currentSave].progress.currentFloor >= 0 && GameSaves.saves[GameSaves.currentSave].progress.currentFloor <= floors.Length)
+        if (GameSaves.saves[GameSaves.currentSave].progress.currentFloor >= 0 && GameSaves.saves[GameSaves.currentSave].progress.currentFloor <= floors.Length 
+            )
         {
             SceneManager.LoadSceneAsync(floors[GameSaves.saves[GameSaves.currentSave].progress.currentFloor - 1], LoadSceneMode.Additive);
         }
@@ -73,6 +72,11 @@ public class GameManager : MonoBehaviour
         return hasFloorLoaded;
     }
 
+    public bool CheckIfFloorLoaded(int floor)
+    {
+        return SceneManager.GetSceneByName(floors[floor - 1]) != null;
+    }
+
     private async void SpawnPlayer()
     {
         while (FloorManager.Instance == null) await Task.Delay(1);
@@ -83,10 +87,7 @@ public class GameManager : MonoBehaviour
     {
         if(floorIndex < floors.Length)
         {
-            if(floorIndex > currentFloor - 1)
-            {
-                GameSaveManager.TryOverrideFloor(floorIndex + 1, FloorManager.Instance.ToFloorProgress());
-            }
+            GameSaveManager.TryOverrideFloor(floorIndex + 1, FloorManager.Instance.ToFloorProgress());
 
             SaveSystem.SaveGame();
 

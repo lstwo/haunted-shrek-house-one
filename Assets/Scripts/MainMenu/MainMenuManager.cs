@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -10,11 +8,10 @@ public class MainMenuManager : MonoBehaviour
     [Header("Assigns")]
     public AudioMixer mixer;
     public TextMeshProUGUI senitivityPercentage, volumePercentage;
+    public TMP_Dropdown resolutionDropdown;
 
     [Header("Funny Numbers")]
     public static float sensitivity = 5;
-
-    
 
     public void SetSensitivity(float value)
     {
@@ -31,5 +28,16 @@ public class MainMenuManager : MonoBehaviour
     public void Play()
     {
         SceneManager.LoadSceneAsync("SampleScene");
+    }
+
+    public void SetFullscreen(bool value)
+    {
+        if(value)
+        {
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+        } else
+        {
+            Screen.SetResolution(1280, 720, false);
+        }
     }
 }

@@ -29,7 +29,6 @@ public class FloorManager : MonoBehaviour
     {
         if(_instance != null && _instance != this) Destroy(_instance.gameObject);
         _instance = this;
-        Debug.Log(_instance);
 
         if(playerSpawnInElevator) GameManager.Instance.justLoadedFloor = true;
 
@@ -51,7 +50,6 @@ public class FloorManager : MonoBehaviour
     public SerializableFloorProgress ToFloorProgress()
     {
         SerializableFloorProgress progress = new(floorNumber, doorsToSave);
-        Debug.Log(progress.doorProgress.Length);
         return progress;
     }
 }

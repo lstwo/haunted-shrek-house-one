@@ -17,7 +17,7 @@ public static class SaveSystem
 
         for(int i = 0; i < GameSaves.saves.Length; i++)
         {
-            FileStream stream = new FileStream(path + "save_" + i + ".shrek", FileMode.Create);
+            FileStream stream = new FileStream(path + "/save_" + i + ".shrek", FileMode.Create);
 
             formatter.Serialize(stream, GameSaves.saves[i].Serialize());
             stream.Close();
@@ -37,11 +37,6 @@ public static class SaveSystem
             {
                 FileStream stream = new FileStream(path, FileMode.Open);
                 saves[i] = ((SerializableGameSave)formatter.Deserialize(stream)).Deserialize();
-                try
-                {
-                    Debug.Log(saves[i].progress.floorProgress[0].doorProgress[0].opened + "sdgjfk");
-                }
-                catch (Exception e) { }
                 stream.Close();
             } else
             {

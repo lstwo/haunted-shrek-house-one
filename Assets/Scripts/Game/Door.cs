@@ -1,32 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class Door : MonoBehaviour
 {
     public GameObject normalDoor, brokenDoor;
     public bool destroyesKey = true;
+    public DoorType type;
+    public string keyTag = "Key";
+    public string hammerTag = "Hammer";
 
-    private void OnCollisionEnter(Collision collision)
+    public enum DoorType
     {
-        if(collision.collider.tag == "Key")
-        {
-            foreach(DoorField go in FloorManager.Instance.doorsToSave)
-            {
-                if(go.door == gameObject)
-                {
-                    go.hasBeenOpened = true;
-                }
-            }
+        Broken,
+        Key,
+        Hammer,
+        KeyOrHammer
+    }
 
-            if(destroyesKey)
+    private void OnTriggerEnter(Collider collision)
+    {
+        if(type == DoorType.Broken)
+        {
+            if(collision.tag == "Player" && collision.gameObject.GetComponent<PlayerController>() != null && 
+                collision.gameObject.GetComponent<PlayerController>().currentStage == PlayerController.PlayerStage.Sprinting)
             {
-                GameManager.Instance.playerController.pickup.Drop();
-                Destroy(collision.gameObject);
+                normalDoor.SetActive(false);
+                brokenDoor.SetActive(true);
             }
-            
-            normalDoor.SetActive(false);
-            brokenDoor.SetActive(true);
+        } else 
+        {
+            if ((type == DoorType.Key && collision.tag == keyTag) || (type == DoorType.Hammer && collision.tag == hammerTag) || 
+                (type == DoorType.KeyOrHammer && (collision.tag == keyTag || collision.tag == hammerTag)))
+            {
+                foreach (DoorField go in FloorManager.Instance.doorsToSave)
+                {
+                    if (go.door == gameObject)
+                    {
+                        go.hasBeenOpened = true;
+                    }
+                }
+
+                if (destroyesKey)
+                {
+                    GameManager.Instance.playerController.pickup.Drop();
+                    Destroy(collision.gameObject);
+                }
+
+                normalDoor.SetActive(false);
+                brokenDoor.SetActive(true);
+            }
         }
     }
 }
