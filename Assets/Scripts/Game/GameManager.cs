@@ -29,13 +29,16 @@ public class GameManager : MonoBehaviour
         get { return _instance; }
     }
 
+    public static bool hasInstance;
+
     private void Awake()
     {
         if (_instance != null && _instance != this) Destroy(this.gameObject);
         else _instance = this;
 
-        if (GameSaves.saves[GameSaves.currentSave].progress.currentFloor >= 0 && GameSaves.saves[GameSaves.currentSave].progress.currentFloor <= floors.Length 
-            )
+        hasInstance = true;
+
+        if (GameSaves.saves[GameSaves.currentSave].progress.currentFloor >= 0 && GameSaves.saves[GameSaves.currentSave].progress.currentFloor <= floors.Length)
         {
             SceneManager.LoadSceneAsync(floors[GameSaves.saves[GameSaves.currentSave].progress.currentFloor - 1], LoadSceneMode.Additive);
         }

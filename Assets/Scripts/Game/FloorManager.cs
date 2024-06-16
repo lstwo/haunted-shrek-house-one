@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FloorManager : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class FloorManager : MonoBehaviour
     {
         if(_instance != null && _instance != this) Destroy(_instance.gameObject);
         _instance = this;
+
+        if (GameManager.Instance == null) SceneManager.LoadScene("TheGame", LoadSceneMode.Additive);
 
         if(playerSpawnInElevator) GameManager.Instance.justLoadedFloor = true;
 

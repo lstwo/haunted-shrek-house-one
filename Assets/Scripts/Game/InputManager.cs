@@ -14,8 +14,12 @@ public class InputManager : MonoBehaviour
     }
 
     private InputActions inputActions;
+    private DefaultInputActions defaultInputActions;
 
     public InputAction clickAction;
+
+    public InputAction nextDialogueAction;
+    public InputAction skipDialogueAction;
 
     private void Awake()
     {
@@ -24,6 +28,9 @@ public class InputManager : MonoBehaviour
 
         inputActions = new InputActions();
         clickAction = inputActions.FindAction("Click");
+
+        nextDialogueAction = inputActions.FindAction("NextDialogue");
+        skipDialogueAction = inputActions.FindAction("SkipDialogue");
     }
 
     private void OnEnable()

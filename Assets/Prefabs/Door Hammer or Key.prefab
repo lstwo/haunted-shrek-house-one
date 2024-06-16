@@ -2539,7 +2539,6 @@ GameObject:
   - component: {fileID: 465054194301417893}
   - component: {fileID: 1300556829133655947}
   - component: {fileID: 416900875804825902}
-  - component: {fileID: 3896608052106186046}
   m_Layer: 0
   m_Name: Cylinder (1)
   m_TagString: Untagged
@@ -2612,29 +2611,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3896608052106186046
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1516704066682785817}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &1749038060539284451
 GameObject:
   m_ObjectHideFlags: 0
@@ -8451,7 +8427,7 @@ MonoBehaviour:
   normalDoor: {fileID: 453470791636055108}
   brokenDoor: {fileID: 4840856275741280023}
   destroyesKey: 1
-  type: 1
+  type: 3
   keyTag: Key
   hammerTag: Hammer
 --- !u!54 &7777573088832245369
@@ -8500,8 +8476,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.40175915, y: 2.923112, z: 1.7555135}
-  m_Center: {x: 3.1732516, y: 1.4326203, z: -0.06456596}
+  m_Size: {x: 0.44290447, y: 2.923112, z: 1.7555135}
+  m_Center: {x: 3.1938243, y: 1.4326203, z: -0.06456596}
 --- !u!1 &4280405955876409809
 GameObject:
   m_ObjectHideFlags: 0

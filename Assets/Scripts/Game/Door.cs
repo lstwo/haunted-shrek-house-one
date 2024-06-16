@@ -6,7 +6,7 @@ using UnityEngine.ProBuilder.MeshOperations;
 public class Door : MonoBehaviour
 {
     public GameObject normalDoor, brokenDoor;
-    public bool destroyesKey = true;
+    public bool destroyesItem = true;
     public DoorType type;
     public string keyTag = "Key";
     public string hammerTag = "Hammer";
@@ -24,10 +24,18 @@ public class Door : MonoBehaviour
         if(type == DoorType.Broken)
         {
             if(collision.tag == "Player" && collision.gameObject.GetComponent<PlayerController>() != null && 
-                collision.gameObject.GetComponent<PlayerController>().currentStage == PlayerController.PlayerStage.Sprinting)
+                collision.gameObject.GetComponent<PlayerController>().currentStage == PlayerController.PlayerStage.Sprinting ||  collision.tag == hammerTag)
             {
                 normalDoor.SetActive(false);
                 brokenDoor.SetActive(true);
+
+                foreach (DoorField go in FloorManager.Instance.doorsToSave)
+                {
+                    if (go.door == gameObject)
+                    {
+                        go.hasBeenOpened = true;
+                    }
+                }
             }
         } else 
         {
@@ -42,7 +50,7 @@ public class Door : MonoBehaviour
                     }
                 }
 
-                if (destroyesKey)
+                if (destroyesItem)
                 {
                     GameManager.Instance.playerController.pickup.Drop();
                     Destroy(collision.gameObject);

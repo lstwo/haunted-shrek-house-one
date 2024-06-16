@@ -29,8 +29,8 @@ public class CinemachinePOVExtension : CinemachineExtension
                 Vector2 deltaInput = inputManager.GetMouseDelta();
                 smoothedMouseDelta = Vector2.Lerp(smoothedMouseDelta, deltaInput, smoothing * Time.deltaTime);
 
-                startingRotation.x += (smoothedMouseDelta.x * horizontalSpeed / 4 * Time.deltaTime) % 360;
-                startingRotation.y += (-smoothedMouseDelta.y * verticalSpeed / 4 * Time.deltaTime) % 360;
+                startingRotation.x += (smoothedMouseDelta.x * horizontalSpeed * Time.deltaTime) % 360;
+                startingRotation.y += (-smoothedMouseDelta.y * verticalSpeed * Time.deltaTime) % 360;
 
                 startingRotation.y = Mathf.Clamp(startingRotation.y, -clampAngle, clampAngle);
 
