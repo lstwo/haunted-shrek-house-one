@@ -117,10 +117,10 @@ public class Pickup : MonoBehaviour
             // Calculate the distance vector to move the object
             Vector3 distance = desiredPosition - pickupRb.transform.position;
 
-            pickupRb.velocity = distance.Round(2).normalized * speed;
-            pickupRb.position = desiredPosition;
+            pickupRb.MovePosition(desiredPosition);
 
             pickupRb.transform.forward = transform.forward;
+            pickupRb.velocity = distance.normalized * speed * Time.fixedDeltaTime;
         }
     }
 }
