@@ -19,7 +19,8 @@ public class Pickup : MonoBehaviour
 
     [Header("Funny Numbers")]
     public float distance;
-    public float speed;
+    public float throwSpeed;
+    public float throwSmoothing;
     public float maxDistanceToObject;
     public float gravityModifier = 1;
     public float rotationSpeed = 100f;
@@ -72,8 +73,8 @@ public class Pickup : MonoBehaviour
         if(isHolding)
         {
             pickupObject.transform.parent = null;
-
             pickupRb.isKinematic = false;
+            pickupRb.velocity = (pickupObject.GetComponent<Item>().fakeVelocity);
 
             // Resetting all variables about the picked up object
             holdingPoint.transform.localPosition = Vector3.zero;
@@ -100,6 +101,7 @@ public class Pickup : MonoBehaviour
         pickupRb.isKinematic = true;
 
         pickupObject.transform.parent = holdingPoint.transform;
+        pickupRb.transform.localPosition = Vector3.zero;
     }
 
     void ObjectMoving()
@@ -124,7 +126,7 @@ public class Pickup : MonoBehaviour
             holdingPoint.transform.position = desiredPosition;
 
             pickupRb.transform.forward = transform.forward;
-            pickupRb.velocity = distance.normalized * speed * Time.fixedDeltaTime;
+            pickupObject.GetComponent<Item>().fakeVelocity = Vector3.Lerp(pickupObject.GetComponent<Item>().fakeVelocity, distance.normalized * throwSpeed, throwSmoothing);
         }
     }
 }

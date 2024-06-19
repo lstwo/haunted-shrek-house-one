@@ -15,7 +15,8 @@ public class Crate : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag == "Hammer" && collision.rigidbody != null && collision.rigidbody.velocity.magnitude > minVelocity)
+        if(collision.collider.tag == "Hammer" && collision.rigidbody != null && (collision.rigidbody.velocity.magnitude > minVelocity || 
+            (collision.rigidbody.gameObject.GetComponent<Item>() != null && collision.rigidbody.gameObject.GetComponent<Item>().fakeVelocity.magnitude > minVelocity)))
         {
             if (crateObject != null) 
                 crateObject.SetActive(false);

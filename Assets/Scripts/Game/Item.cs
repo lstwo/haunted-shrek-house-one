@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
+    public Vector3 fakeVelocity;
+
     private void OnCollisionStay(Collision collision)
     {
         if (!collision.gameObject.activeInHierarchy) 

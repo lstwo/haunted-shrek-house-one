@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
                 stamina = Mathf.Clamp(stamina, 0f, maxStamina);
             }
 
-            else if(doStamina)
+            else if(doStamina && stamina > 0)
             {
                 currentStage = PlayerStage.Walking;
                 headAnimation.clip = (walkingHeadAnimation);
