@@ -71,6 +71,8 @@ public class Pickup : MonoBehaviour
     {
         if(isHolding)
         {
+            pickupObject.transform.parent = null;
+
             pickupRb.isKinematic = false;
 
             // Resetting all variables about the picked up object
@@ -96,6 +98,8 @@ public class Pickup : MonoBehaviour
         isHolding = true;
 
         pickupRb.isKinematic = true;
+
+        pickupObject.transform.parent = holdingPoint.transform;
     }
 
     void ObjectMoving()
@@ -117,7 +121,7 @@ public class Pickup : MonoBehaviour
             // Calculate the distance vector to move the object
             Vector3 distance = desiredPosition - pickupRb.transform.position;
 
-            pickupRb.MovePosition(desiredPosition);
+            holdingPoint.transform.position = desiredPosition;
 
             pickupRb.transform.forward = transform.forward;
             pickupRb.velocity = distance.normalized * speed * Time.fixedDeltaTime;
