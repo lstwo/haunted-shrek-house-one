@@ -15,6 +15,8 @@ public class Pickup : MonoBehaviour
     public LayerMask envLayerMask;
     public PlayerController player;
 
+    public Transform debugTransform;
+
     [Header("Funny Numbers")]
     public float distance;
     public float speed;
@@ -69,6 +71,8 @@ public class Pickup : MonoBehaviour
     {
         if(isHolding)
         {
+            pickupRb.isKinematic = false;
+
             // Resetting all variables about the picked up object
             holdingPoint.transform.localPosition = Vector3.zero;
 
@@ -90,6 +94,8 @@ public class Pickup : MonoBehaviour
 
             // Enable Holding and the line renderer
         isHolding = true;
+
+        pickupRb.isKinematic = true;
     }
 
     void ObjectMoving()
@@ -102,7 +108,7 @@ public class Pickup : MonoBehaviour
 
             // Perform raycast to check if there's an obstacle between the current position and the holding point
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, (desiredPosition - transform.position).normalized, out hit, (desiredPosition - transform.position).magnitude, envLayerMask))
+            if (Physics.Raycast(transform.position, transform.forward, out hit, (desiredPosition - transform.position).magnitude, envLayerMask))
             {
                 // If there's a hit, set the desired position to the hit point
                 desiredPosition = hit.point;
@@ -111,10 +117,32 @@ public class Pickup : MonoBehaviour
             // Calculate the distance vector to move the object
             Vector3 distance = desiredPosition - pickupRb.transform.position;
 
-            // Smoothly interpolate the position or apply a force
-            pickupRb.velocity = distance * speed;
+            pickupRb.velocity = distance.Round(2).normalized * speed;
+            pickupRb.position = desiredPosition;
 
             pickupRb.transform.forward = transform.forward;
         }
+    }
+}
+
+public static class ExtensionMethods
+{
+    /// <summary>
+    /// Rounds Vector3.
+    /// </summary>
+    /// <param name="vector3"></param>
+    /// <param name="decimalPlaces"></param>
+    /// <returns></returns>
+    public static Vector3 Round(this Vector3 vector3, int decimalPlaces = 2)
+    {
+        float multiplier = 1;
+        for (int i = 0; i < decimalPlaces; i++)
+        {
+            multiplier *= 10f;
+        }
+        return new Vector3(
+            Mathf.Round(vector3.x * multiplier) / multiplier,
+            Mathf.Round(vector3.y * multiplier) / multiplier,
+            Mathf.Round(vector3.z * multiplier) / multiplier);
     }
 }

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.PlayerLoop;
 
 public class InputManager : MonoBehaviour
 {
@@ -14,7 +16,6 @@ public class InputManager : MonoBehaviour
     }
 
     private InputActions inputActions;
-    private DefaultInputActions defaultInputActions;
 
     public InputAction clickAction;
 
@@ -29,8 +30,13 @@ public class InputManager : MonoBehaviour
         inputActions = new InputActions();
         clickAction = inputActions.FindAction("Click");
 
-        nextDialogueAction = inputActions.FindAction("NextDialogue");
-        skipDialogueAction = inputActions.FindAction("SkipDialogue");
+        nextDialogueAction = inputActions.UI.NextDialogue;
+        skipDialogueAction = inputActions.UI.SkipDialogue;
+    }
+
+    private void Update()
+    {
+        //InputSystem.Update();
     }
 
     private void OnEnable()

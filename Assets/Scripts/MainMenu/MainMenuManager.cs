@@ -10,12 +10,9 @@ public class MainMenuManager : MonoBehaviour
     public TextMeshProUGUI senitivityPercentage, volumePercentage;
     public TMP_Dropdown resolutionDropdown;
 
-    [Header("Funny Numbers")]
-    public static float sensitivity = 5;
-
     public void SetSensitivity(float value)
     {
-        sensitivity = value / 5;
+        GameManager.sensitivity = value / 5;
         senitivityPercentage.text = ((int)value).ToString() + "%";
     }
 

@@ -8342,7 +8342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalDoor: {fileID: 453470791636055108}
   brokenDoor: {fileID: 4840856275741280023}
-  destroyesKey: 1
+  destroyesItem: 1
   type: 2
   keyTag: Key
   hammerTag: Hammer

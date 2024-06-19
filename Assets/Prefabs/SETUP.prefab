@@ -599,7 +599,7 @@ MonoBehaviour:
     m_Bits: 8
   envLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 129
   player: {fileID: 6990862647446128089}
   distance: 5
   speed: 6

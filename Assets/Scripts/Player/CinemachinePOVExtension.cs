@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class CinemachinePOVExtension : CinemachineExtension
 {
-    public float smoothing = 5f;
+     float smoothing = 150f;
 
-    private float horizontalSpeed = MainMenuManager.sensitivity;
+    private float horizontalSpeed = GameManager.sensitivity;
 
-    private float verticalSpeed = MainMenuManager.sensitivity;
+    private float verticalSpeed = GameManager.sensitivity;
 
     private Vector2 smoothedMouseDelta;
 
@@ -27,24 +27,24 @@ public class CinemachinePOVExtension : CinemachineExtension
                 if (startingRotation == null) startingRotation = transform.localRotation.eulerAngles;
 
                 Vector2 deltaInput = inputManager.GetMouseDelta();
-                smoothedMouseDelta = Vector2.Lerp(smoothedMouseDelta, deltaInput, smoothing * Time.deltaTime);
+                smoothedMouseDelta = Vector2.Lerp(smoothedMouseDelta, deltaInput, smoothing);
 
-                startingRotation.x += (smoothedMouseDelta.x * horizontalSpeed * Time.deltaTime) % 360;
-                startingRotation.y += (-smoothedMouseDelta.y * verticalSpeed * Time.deltaTime) % 360;
+                Debug.Log(deltaInput);
+
+                startingRotation.x += smoothedMouseDelta.x * horizontalSpeed* Time.deltaTime % 360f;
+                startingRotation.y += -smoothedMouseDelta.y * verticalSpeed * Time.deltaTime % 360f;
 
                 startingRotation.y = Mathf.Clamp(startingRotation.y, -clampAngle, clampAngle);
 
-
-
-                state.RawOrientation = Quaternion.Euler(startingRotation.y % 360, startingRotation.x % 360, 0f);
+                state.RawOrientation = Quaternion.Euler(startingRotation.y % 360f, startingRotation.x % 360f, 0f);
             }
         }
     }
 
     protected override void Awake()
     {
-        horizontalSpeed = MainMenuManager.sensitivity;
-        verticalSpeed = MainMenuManager.sensitivity;
+        horizontalSpeed = GameManager.sensitivity;
+        verticalSpeed = GameManager.sensitivity;
 
         inputManager = InputManager.Instance;
         inputManager.SetCursorLock(true);

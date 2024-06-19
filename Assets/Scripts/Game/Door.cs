@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,13 @@ using UnityEngine.ProBuilder.MeshOperations;
 
 public class Door : MonoBehaviour
 {
+    [Header("Assigns")]
     public GameObject normalDoor, brokenDoor;
-    public bool destroyesItem = true;
     public DoorType type;
+
+    [Header("Funny Numbers")]
+    public bool destroyesItem = true;
+
     public string keyTag = "Key";
     public string hammerTag = "Hammer";
 
@@ -21,43 +26,56 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
+        if (normalDoor == null) return;
+
+        // Broken Door
         if(type == DoorType.Broken)
         {
             if(collision.tag == "Player" && collision.gameObject.GetComponent<PlayerController>() != null && 
                 collision.gameObject.GetComponent<PlayerController>().currentStage == PlayerController.PlayerStage.Sprinting ||  collision.tag == hammerTag)
             {
-                normalDoor.SetActive(false);
-                brokenDoor.SetActive(true);
-
-                foreach (DoorField go in FloorManager.Instance.doorsToSave)
-                {
-                    if (go.door == gameObject)
-                    {
-                        go.hasBeenOpened = true;
-                    }
-                }
+                SaveDoor();
+                DestroyDoor();
             }
-        } else 
+        } 
+
+        // Item Door
+        else 
         {
             if ((type == DoorType.Key && collision.tag == keyTag) || (type == DoorType.Hammer && collision.tag == hammerTag) || 
                 (type == DoorType.KeyOrHammer && (collision.tag == keyTag || collision.tag == hammerTag)))
             {
-                foreach (DoorField go in FloorManager.Instance.doorsToSave)
-                {
-                    if (go.door == gameObject)
-                    {
-                        go.hasBeenOpened = true;
-                    }
-                }
-
                 if (destroyesItem)
                 {
-                    GameManager.Instance.playerController.pickup.Drop();
-                    Destroy(collision.gameObject);
+                    DestroyKey(collision.gameObject);
                 }
 
-                normalDoor.SetActive(false);
-                brokenDoor.SetActive(true);
+                SaveDoor();
+                DestroyDoor();
+            }
+        }
+    }
+
+    void DestroyKey(GameObject g)
+    {
+        GameManager.Instance.playerController.pickup.Drop();
+        Destroy(g);
+    }
+
+    void DestroyDoor()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+        Destroy(normalDoor);
+        brokenDoor.SetActive(true);
+    }
+
+    void SaveDoor()
+    {
+        foreach (DoorField go in FloorManager.Instance.doorsToSave)
+        {
+            if (go.door == gameObject)
+            {
+                go.hasBeenOpened = true;
             }
         }
     }
