@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Funny Numbers")]
     public int startingFloor = -1;
-    public static float sensitivity = 5;
+    public static float sensitivity = 10;
 
     [HideInInspector] // Used for spawning in an elevator to not instantly load the next floor
     public bool justLoadedFloor = false;
